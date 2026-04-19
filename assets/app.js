@@ -91,35 +91,12 @@ function showScreen(which) {
 }
 
 // ============================================================
-// API KEY — prefer .env, fall back to localStorage
+// API KEY — prefer env.js, fall back to localStorage
 // ============================================================
 
-let envApiKey = '';
-
-async function loadEnv() {
-  try {
-    const res = await fetch('.env', { cache: 'no-store' });
-    if (!res.ok) return;
-    const text = await res.text();
-    for (const line of text.split(/\r?\n/)) {
-      const trimmed = line.trim();
-      if (!trimmed || trimmed.startsWith('#')) continue;
-      const eq = trimmed.indexOf('=');
-      if (eq === -1) continue;
-      const key = trimmed.slice(0, eq).trim();
-      let val = trimmed.slice(eq + 1).trim();
-      if ((val.startsWith('"') && val.endsWith('"')) ||
-          (val.startsWith("'") && val.endsWith("'"))) {
-        val = val.slice(1, -1);
-      }
-      if (key === 'GEMINI_API_KEY' && val) envApiKey = val;
-    }
-  } catch {
-    // .env missing or unreachable (e.g. file:// protocol) — fall back silently
-  }
-}
-
-const getApiKey = () => envApiKey || localStorage.getItem('haven_gemini_api_key') || '';
+const getApiKey = () =>
+  (window.HAVEN_ENV && window.HAVEN_ENV.GEMINI_API_KEY) ||
+  localStorage.getItem('haven_gemini_api_key') || '';
 const setApiKey = (k) => localStorage.setItem('haven_gemini_api_key', k);
 
 function openApiKeyModal() {
@@ -379,8 +356,6 @@ el.sendBtn.addEventListener('click', sendMessage);
 // ============================================================
 // INIT
 // ============================================================
-
-loadEnv();
 
 if (localStorage.getItem('haven_disclaimer_accepted') === 'true') {
   showScreen('selector');
