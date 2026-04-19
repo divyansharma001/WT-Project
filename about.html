@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About &middot; haven</title>
+    <meta name="description" content="Why we built haven, how it works, and what it will never do." />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style.css" />
+  </head>
+  <body class="landing">
+
+    <nav class="landing-nav-wrap">
+      <div class="landing-nav">
+        <a href="index.html" class="nav-logo">
+          <span class="nav-logo-badge">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M50 20C50 20 70 45 70 65C70 80 60 90 50 90C40 90 30 80 30 65C30 45 50 20 50 20Z" fill="#0ea5e9"/>
+              <path d="M50 90C50 90 20 80 15 55C12 45 25 35 35 50C40 58 50 75 50 90Z" fill="#38bdf8" opacity="0.9"/>
+              <path d="M50 90C50 90 80 80 85 55C88 45 75 35 65 50C60 58 50 75 50 90Z" fill="#38bdf8" opacity="0.9"/>
+              <circle cx="50" cy="12" r="4" fill="#7dd3fc"/>
+            </svg>
+          </span>
+          <span class="nav-logo-text">haven</span>
+        </a>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="breathe.html">Breathe</a>
+          <a href="resources.html">Resources</a>
+          <a href="about.html" class="nav-active">About</a>
+        </div>
+        <a href="app.html" class="nav-cta">Try haven &rarr;</a>
+      </div>
+    </nav>
+
+    <!-- Page hero -->
+    <section class="page-hero">
+      <div class="page-hero-bg"></div>
+      <div class="page-hero-inner">
+        <span class="eyebrow">About</span>
+        <h1>A gentler kind<br/>of technology.</h1>
+        <p>haven was built on a quiet belief: that being heard is a need, not a luxury. And that the tools we reach for in hard moments shouldn't be harvesting us for ad revenue while they help.</p>
+      </div>
+    </section>
+
+    <!-- Mission -->
+    <section class="section">
+      <div class="about-mission">
+        <div class="about-quote-mark">&ldquo;</div>
+        <p>
+          Most people don't need a diagnosis. They need someone &mdash; or something &mdash; to sit with them for a few minutes, reflect back what they're feeling, and help them find a next step. haven is our attempt at that thing.
+        </p>
+        <p>
+          Not a replacement for therapy. Not pretending to be a friend. Just a careful, private space to think out loud, with eight voices designed to meet different moods.
+        </p>
+      </div>
+    </section>
+
+    <!-- Principles -->
+    <section class="section section-tinted">
+      <div class="section-head">
+        <span class="eyebrow">What we stand for</span>
+        <h2>Three non-negotiables.</h2>
+        <p class="section-sub">The principles that shape every feature and every word.</p>
+      </div>
+
+      <div class="principles">
+        <article class="principle">
+          <div class="principle-num">01</div>
+          <h3>Privacy is a promise, not a feature.</h3>
+          <p>We don't host your data. We don't have a database. We don't have analytics. haven runs in your browser and talks directly to the AI provider you choose. When you close the tab, the conversation is gone &mdash; and that's intentional.</p>
+        </article>
+        <article class="principle">
+          <div class="principle-num">02</div>
+          <h3>Boundaries are part of the care.</h3>
+          <p>Every mentor is prompted to know what it is and what it isn't. We won't diagnose. We won't prescribe. We will &mdash; every time &mdash; point toward human help when it's warranted. A tool that won't admit its limits isn't safe.</p>
+        </article>
+        <article class="principle">
+          <div class="principle-num">03</div>
+          <h3>Gentleness beats cleverness.</h3>
+          <p>We tuned the mentors to slow down, to reflect, to ask. Not to dispense quick fixes. When you're in the middle of something hard, the wrong kind of help can make things worse. We'd rather be soft and useful than impressive and brittle.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="section" id="how-it-works">
+      <div class="section-head">
+        <span class="eyebrow">Under the hood</span>
+        <h2>How it works, plainly.</h2>
+        <p class="section-sub">No black box. Here's the whole stack.</p>
+      </div>
+
+      <div class="how-it-works">
+        <div class="how-row">
+          <div class="how-step-tag">1</div>
+          <div>
+            <h3>You pick a mood and a mentor</h3>
+            <p>Each mentor is defined by a short system prompt describing their name, role, and style &mdash; plus a shared safety rubric every mentor follows.</p>
+          </div>
+        </div>
+        <div class="how-row">
+          <div class="how-step-tag">2</div>
+          <div>
+            <h3>Your browser calls Google's Gemini API directly</h3>
+            <p>There is no haven server. The request goes from your browser to Google, using an API key that lives in your localStorage and nowhere else.</p>
+          </div>
+        </div>
+        <div class="how-row">
+          <div class="how-step-tag">3</div>
+          <div>
+            <h3>The response appears in your chat</h3>
+            <p>The message history is kept in memory so the mentor has context. Close the tab and it's cleared. No sync, no cloud, no leak.</p>
+          </div>
+        </div>
+        <div class="how-row">
+          <div class="how-step-tag">4</div>
+          <div>
+            <h3>You can export or forget</h3>
+            <p>One click downloads the transcript as a text file for your own records. Or don't &mdash; the default is forgetting.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section section-tinted" id="faq">
+      <div class="section-head">
+        <span class="eyebrow">FAQ</span>
+        <h2>Honest answers.</h2>
+      </div>
+
+      <div class="faq-list">
+        <details class="faq-item" open>
+          <summary>Is haven a replacement for therapy?</summary>
+          <p>No &mdash; and we'd be worried about anything that claimed to be. haven is a low-friction place to think out loud, try grounding tools, or feel a bit less alone at 2am. If you're dealing with something ongoing or acute, please connect with a licensed professional. The resources page has places to start.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Who sees my conversations?</summary>
+          <p>Your conversations go from your browser to Google's Gemini API and back. We don't run a server, so no conversation ever reaches us. Google's data policy applies to API traffic &mdash; worth reading if that matters to you.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Why do I need my own API key?</summary>
+          <p>Because "free with no account" only works if the cost is somewhere. We didn't want the cost to be your data or your attention, so we chose to let you bring your own key. Gemini offers a generous free tier &mdash; most casual use costs nothing.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What if I mention self-harm or suicide?</summary>
+          <p>Every mentor is prompted to respond with compassion <em>and</em> to surface crisis resources immediately: 988, Crisis Text Line, and similar. It will not try to handle a crisis alone. If you're in one right now, please call or text 988 &mdash; a real person will pick up.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Can I use haven on my phone?</summary>
+          <p>Yes. It's a responsive web app &mdash; open it in any browser on any device. There's no app to install. If you'd like a home screen icon, "Add to Home Screen" in your mobile browser works well.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Can I save or journal my conversations?</summary>
+          <p>Inside a session, yes &mdash; hit the download button in the chat header to export the transcript as a plain text file. Between sessions, nothing is stored; that's by design. If journaling matters to you, export and keep the file somewhere you trust.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Is haven free?</summary>
+          <p>The haven interface is free and open. The only cost is whatever Google charges you for Gemini API usage, which for most people is $0.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Which mentor should I pick?</summary>
+          <p>Honestly: whichever one feels right. Use the mood picker for a suggestion, but the best mentor is the one whose voice makes you want to keep talking. You can switch anytime.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- Safety -->
+    <section class="section">
+      <div class="safety-card">
+        <div class="safety-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+        </div>
+        <h3>A few important limits.</h3>
+        <p>haven is <strong>not</strong> a licensed mental health provider, and it cannot diagnose, treat, or prescribe anything. If you're in an emergency or experiencing thoughts of self-harm, please reach out to a crisis line (988 in the US) or go to your nearest emergency room. If you're looking for ongoing care, please work with a qualified therapist or psychiatrist. haven is designed to complement that care &mdash; never to stand in for it.</p>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="final-cta">
+      <div class="final-cta-inner">
+        <h2>That's the whole idea.</h2>
+        <p>A private corner of the internet where you can show up exactly as you are.</p>
+        <a href="app.html" class="btn-primary-lg">
+          Open haven
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+    </section>
+
+    <footer class="landing-footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <span class="nav-logo-badge">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M50 20C50 20 70 45 70 65C70 80 60 90 50 90C40 90 30 80 30 65C30 45 50 20 50 20Z" fill="#0ea5e9"/>
+              <path d="M50 90C50 90 20 80 15 55C12 45 25 35 35 50C40 58 50 75 50 90Z" fill="#38bdf8" opacity="0.9"/>
+              <path d="M50 90C50 90 80 80 85 55C88 45 75 35 65 50C60 58 50 75 50 90Z" fill="#38bdf8" opacity="0.9"/>
+            </svg>
+          </span>
+          <div>
+            <div class="footer-brand-name">haven</div>
+            <div class="footer-brand-tag">A gentle space for your mind.</div>
+          </div>
+        </div>
+        <div class="footer-crisis">
+          <strong>In crisis?</strong> You're not alone. Please reach out:<br/>
+          <span>988 Suicide &amp; Crisis Lifeline &middot; Text HOME to 741741</span>
+        </div>
+        <div class="footer-disclaimer">
+          haven is an AI companion, not a licensed therapist. It cannot diagnose or treat medical conditions. For urgent or ongoing mental health needs, please connect with a qualified professional.
+        </div>
+      </div>
+    </footer>
+
+  </body>
+</html>

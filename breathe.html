@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Breathe &middot; haven</title>
+    <meta name="description" content="Guided breathing exercises for calm, focus, and sleep. Box, 4-7-8, coherent, and extended-exhale techniques." />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style.css" />
+  </head>
+  <body class="landing">
+
+    <nav class="landing-nav-wrap">
+      <div class="landing-nav">
+        <a href="index.html" class="nav-logo">
+          <span class="nav-logo-badge">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M50 20C50 20 70 45 70 65C70 80 60 90 50 90C40 90 30 80 30 65C30 45 50 20 50 20Z" fill="#0ea5e9"/>
+              <path d="M50 90C50 90 20 80 15 55C12 45 25 35 35 50C40 58 50 75 50 90Z" fill="#38bdf8" opacity="0.9"/>
+              <path d="M50 90C50 90 80 80 85 55C88 45 75 35 65 50C60 58 50 75 50 90Z" fill="#38bdf8" opacity="0.9"/>
+              <circle cx="50" cy="12" r="4" fill="#7dd3fc"/>
+            </svg>
+          </span>
+          <span class="nav-logo-text">haven</span>
+        </a>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="breathe.html" class="nav-active">Breathe</a>
+          <a href="resources.html">Resources</a>
+          <a href="about.html">About</a>
+        </div>
+        <a href="app.html" class="nav-cta">Try haven &rarr;</a>
+      </div>
+    </nav>
+
+    <!-- Page hero -->
+    <section class="page-hero">
+      <div class="page-hero-bg"></div>
+      <div class="page-hero-inner">
+        <span class="eyebrow">Breathe</span>
+        <h1>Four techniques.<br/>Two minutes.<br/>One steadier you.</h1>
+        <p>Your breath is the only part of the nervous system you can steer consciously. Slow it, and everything else follows. Pick a pattern below and follow the circle.</p>
+      </div>
+    </section>
+
+    <!-- Breathing tool -->
+    <section class="section breathe-tool">
+      <div class="technique-picker" role="tablist" aria-label="Breathing technique">
+        <button class="tech-btn is-active" data-technique="box" role="tab" aria-selected="true">
+          <span class="tech-name">Box</span>
+          <span class="tech-pattern">4&middot;4&middot;4&middot;4</span>
+        </button>
+        <button class="tech-btn" data-technique="478" role="tab" aria-selected="false">
+          <span class="tech-name">4&middot;7&middot;8</span>
+          <span class="tech-pattern">Relaxing</span>
+        </button>
+        <button class="tech-btn" data-technique="coherent" role="tab" aria-selected="false">
+          <span class="tech-name">Coherent</span>
+          <span class="tech-pattern">5&middot;5</span>
+        </button>
+        <button class="tech-btn" data-technique="extended" role="tab" aria-selected="false">
+          <span class="tech-name">Extended</span>
+          <span class="tech-pattern">4&middot;6</span>
+        </button>
+      </div>
+
+      <div class="breathe-stage">
+        <div class="breathe-glow"></div>
+        <div id="breathe-circle" class="breathe-circle" data-phase="idle">
+          <div class="breathe-ring"></div>
+          <div class="breathe-inner">
+            <div id="breathe-phase" class="breathe-phase">Ready</div>
+            <div id="breathe-count" class="breathe-count">&middot;</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="breathe-controls">
+        <button id="btn-breathe-toggle" class="btn-primary-lg">
+          <svg id="icon-play" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+          <svg id="icon-pause" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+          <span id="btn-breathe-label">Start</span>
+        </button>
+        <button id="btn-breathe-reset" class="btn-ghost">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+          Reset
+        </button>
+      </div>
+
+      <div class="breathe-stats">
+        <div class="breathe-stat"><span id="stat-cycles">0</span><span>cycles</span></div>
+        <div class="breathe-stat"><span id="stat-time">0:00</span><span>session</span></div>
+      </div>
+
+      <div class="breathe-description" id="breathe-description">
+        <h3>Box Breathing</h3>
+        <p>Equal parts in, hold, out, hold. Used by Navy SEALs and ER doctors to stay calm under pressure. Best for focus and stress reset.</p>
+      </div>
+    </section>
+
+    <!-- Benefits -->
+    <section class="section section-tinted">
+      <div class="section-head">
+        <span class="eyebrow">Why it works</span>
+        <h2>The shortcut to a calmer body.</h2>
+        <p class="section-sub">Slow exhales activate the vagus nerve, which tells your heart to slow and your body to stand down. No magic &mdash; just biology you already have.</p>
+      </div>
+
+      <div class="features-grid">
+        <article class="feature-card">
+          <div class="feature-icon icon-sky">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/></svg>
+          </div>
+          <h3>Slows heart rate</h3>
+          <p>Within 60 seconds of extended exhales, your parasympathetic system takes the wheel. Heart rate and blood pressure drop.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon icon-green">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 1 7 7c0 2.5-1.3 4.6-3 6v3a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-3C6.3 13.6 5 11.5 5 9a7 7 0 0 1 7-7Z"/><path d="M9 22h6"/></svg>
+          </div>
+          <h3>Interrupts spirals</h3>
+          <p>Counting breaths gives the worry-loop something else to do. You're not suppressing thought &mdash; you're re-directing it.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon icon-purple">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <h3>Works fast</h3>
+          <p>Two minutes is enough to shift state. You don't need a meditation practice or an app subscription. Just a chair and 120 seconds.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- When to use -->
+    <section class="section">
+      <div class="section-head">
+        <span class="eyebrow">When to use which</span>
+        <h2>Pick the pattern for the moment.</h2>
+      </div>
+
+      <div class="when-grid">
+        <div class="when-card">
+          <h4><span class="when-tag tag-box">Box</span> Before something stressful</h4>
+          <p>Interview, difficult conversation, presentation. Equal counts keep you alert but steady. Four rounds is usually enough.</p>
+        </div>
+        <div class="when-card">
+          <h4><span class="when-tag tag-478">4&middot;7&middot;8</span> Before sleep</h4>
+          <p>The long exhale and hold deeply relax the body. Do it lying down &mdash; many people drift off before finishing four cycles.</p>
+        </div>
+        <div class="when-card">
+          <h4><span class="when-tag tag-coherent">Coherent</span> For a baseline reset</h4>
+          <p>Five-in, five-out syncs heart rate variability beautifully. Ten minutes a day has documented effects on anxiety.</p>
+        </div>
+        <div class="when-card">
+          <h4><span class="when-tag tag-extended">Extended</span> For acute anxiety</h4>
+          <p>When the exhale is longer than the inhale, it's the fastest way to dial down a panicky body. Do it anywhere.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="final-cta">
+      <div class="final-cta-inner">
+        <h2>Want to keep talking after?</h2>
+        <p>Luna, our mindfulness mentor, can help you sit with whatever comes up.</p>
+        <a href="app.html" class="btn-primary-lg">
+          Meet Luna
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+    </section>
+
+    <footer class="landing-footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <span class="nav-logo-badge">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M50 20C50 20 70 45 70 65C70 80 60 90 50 90C40 90 30 80 30 65C30 45 50 20 50 20Z" fill="#0ea5e9"/>
+              <path d="M50 90C50 90 20 80 15 55C12 45 25 35 35 50C40 58 50 75 50 90Z" fill="#38bdf8" opacity="0.9"/>
+              <path d="M50 90C50 90 80 80 85 55C88 45 75 35 65 50C60 58 50 75 50 90Z" fill="#38bdf8" opacity="0.9"/>
+            </svg>
+          </span>
+          <div>
+            <div class="footer-brand-name">haven</div>
+            <div class="footer-brand-tag">A gentle space for your mind.</div>
+          </div>
+        </div>
+        <div class="footer-crisis">
+          <strong>In crisis?</strong> You're not alone. Please reach out:<br/>
+          <span>988 Suicide &amp; Crisis Lifeline &middot; Text HOME to 741741</span>
+        </div>
+        <div class="footer-disclaimer">
+          haven is an AI companion, not a licensed therapist. It cannot diagnose or treat medical conditions. For urgent or ongoing mental health needs, please connect with a qualified professional.
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/breathe.js"></script>
+  </body>
+</html>
