@@ -1,6 +1,4 @@
-// ============================================================
-// DATA
-// ============================================================
+
 
 const MENTORS = {
   sarah:  { name: 'Sarah',  role: 'Compassionate Listener',  avatar: 'https://api.dicebear.com/9.x/lorelei/svg?seed=Sarah&backgroundColor=e0f2fe',    personality: 'Warm, patient, gentle, focusing on validation and emotional support.',                                                          greeting: "Hi, I'm Sarah. I'm here to listen without judgment. How are you feeling today?" },
@@ -43,20 +41,12 @@ Never:
 - Engage in topics unrelated to mental health support.
 `;
 
-// ============================================================
-// STATE
-// ============================================================
-
 const state = {
   currentMentorId: null,
   messages: [],
   chatHistory: [],
   isTyping: false,
 };
-
-// ============================================================
-// ELEMENT REFS
-// ============================================================
 
 const el = {
   disclaimerScreen: document.getElementById('disclaimer-screen'),
@@ -80,19 +70,11 @@ const el = {
   apiKeyInput: document.getElementById('api-key-input'),
 };
 
-// ============================================================
-// SCREEN ROUTING
-// ============================================================
-
 function showScreen(which) {
   el.disclaimerScreen.classList.toggle('hidden', which !== 'disclaimer');
   el.selectorScreen.classList.toggle('hidden', which !== 'selector');
   el.chatScreen.classList.toggle('hidden', which !== 'chat');
 }
-
-// ============================================================
-// API KEY — prefer env.js, fall back to localStorage
-// ============================================================
 
 const getApiKey = () =>
   (window.HAVEN_ENV && window.HAVEN_ENV.GEMINI_API_KEY) ||
@@ -104,10 +86,6 @@ function openApiKeyModal() {
   el.apiKeyModal.classList.remove('hidden');
 }
 function closeApiKeyModal() { el.apiKeyModal.classList.add('hidden'); }
-
-// ============================================================
-// MOOD
-// ============================================================
 
 function selectMood(moodId) {
   const label = MOOD_LABELS[moodId];
@@ -124,10 +102,6 @@ function clearMood() {
   el.moodDisplay.classList.add('hidden');
   el.chooseHeading.classList.add('hidden');
 }
-
-// ============================================================
-// CHAT
-// ============================================================
 
 function openChat(mentorId) {
   const mentor = MENTORS[mentorId];
@@ -221,10 +195,6 @@ ${SAFETY}`;
   }
 }
 
-// ============================================================
-// MESSAGE RENDERING
-// ============================================================
-
 function renderMessages() {
   const mentor = MENTORS[state.currentMentorId];
   el.messages.innerHTML = '';
@@ -296,10 +266,6 @@ function updateSendButton() {
   el.sendBtn.disabled = !el.input.value.trim() || state.isTyping;
 }
 
-// ============================================================
-// TRANSCRIPT DOWNLOAD
-// ============================================================
-
 function downloadTranscript() {
   const mentor = MENTORS[state.currentMentorId];
   if (!mentor) return;
@@ -314,10 +280,6 @@ function downloadTranscript() {
   a.click();
   URL.revokeObjectURL(url);
 }
-
-// ============================================================
-// EVENT WIRING
-// ============================================================
 
 document.getElementById('btn-accept-disclaimer').addEventListener('click', () => {
   localStorage.setItem('haven_disclaimer_accepted', 'true');
@@ -352,10 +314,6 @@ el.input.addEventListener('keydown', (e) => {
   }
 });
 el.sendBtn.addEventListener('click', sendMessage);
-
-// ============================================================
-// INIT
-// ============================================================
 
 if (localStorage.getItem('haven_disclaimer_accepted') === 'true') {
   showScreen('selector');

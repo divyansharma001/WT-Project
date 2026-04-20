@@ -1,4 +1,4 @@
-// Breathing exercise: phase-based scheduler driving DOM updates.
+
 
 const TECHNIQUES = {
   box:      { name: 'Box Breathing',       phases: [['Inhale', 4], ['Hold', 4], ['Exhale', 4], ['Hold', 4]], description: 'Equal parts in, hold, out, hold. Used by Navy SEALs and ER doctors to stay calm under pressure. Best for focus and stress reset.' },
@@ -58,7 +58,7 @@ function startPhase() {
     circle.style.transitionDuration = seconds + 's';
     circle.style.transform = 'scale(0.6)';
   }
-  // 'hold' leaves the previous transform in place
+
   phaseLabel.textContent = name;
   countLabel.textContent = seconds;
 }

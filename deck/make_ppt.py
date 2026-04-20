@@ -1,8 +1,3 @@
-"""
-Generate haven.pptx — a 16:9 deck matching the landing-page theme:
-serene sky-blue palette, Poppins typography, rounded cards, soft fills.
-"""
-
 import os
 from pptx import Presentation
 from pptx.util import Inches, Pt, Emu
@@ -12,9 +7,6 @@ from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.oxml.ns import qn
 from lxml import etree
 
-# ------------------------------------------------------------------
-# Palette (mirrors --serene-*, --slate-*, --amber-* from style.css)
-# ------------------------------------------------------------------
 SERENE_50  = RGBColor(0xf0, 0xf9, 0xff)
 SERENE_100 = RGBColor(0xe0, 0xf2, 0xfe)
 SERENE_200 = RGBColor(0xba, 0xe6, 0xfd)
@@ -50,27 +42,19 @@ WHITE = RGBColor(0xff, 0xff, 0xff)
 
 FONT = "Poppins"
 
-# ------------------------------------------------------------------
-# Presentation setup (16:9)
-# ------------------------------------------------------------------
 prs = Presentation()
 prs.slide_width  = Inches(13.333)
 prs.slide_height = Inches(7.5)
 BLANK = prs.slide_layouts[6]
 
-# ------------------------------------------------------------------
-# Helpers
-# ------------------------------------------------------------------
 def _no_shadow(shape):
-    """Remove inherited theme shadow from an autoshape."""
-    sp = shape.fill._xPr  # spPr element
-    # Remove any existing effectLst, then add empty one
+    sp = shape.fill._xPr
+
     for el in sp.findall(qn("a:effectLst")):
         sp.remove(el)
     sp.append(etree.SubElement(sp, qn("a:effectLst")))
 
 def bg(slide, color):
-    """Fill the slide background with a solid color."""
     bg = slide.background
     fill = bg.fill
     fill.solid()
@@ -121,7 +105,7 @@ def text(slide, x, y, w, h, content, *,
     tf.word_wrap = True
     tf.margin_left = tf.margin_right = tf.margin_top = tf.margin_bottom = 0
     tf.vertical_anchor = anchor
-    # Support multi-line input by splitting on '\n'
+
     lines = content.split("\n")
     for i, line in enumerate(lines):
         if i == 0:
@@ -140,13 +124,12 @@ def text(slide, x, y, w, h, content, *,
     return tb
 
 def rich_text(slide, x, y, w, h, runs, *, align=PP_ALIGN.LEFT, anchor=MSO_ANCHOR.TOP, line_spacing=1.3):
-    """runs = list of (text, dict of style overrides) or list of paragraphs where each paragraph is a list of runs."""
     tb = slide.shapes.add_textbox(x, y, w, h)
     tf = tb.text_frame
     tf.word_wrap = True
     tf.margin_left = tf.margin_right = tf.margin_top = tf.margin_bottom = 0
     tf.vertical_anchor = anchor
-    # runs may be list of (str, style) or list of lists (paragraphs)
+
     if runs and isinstance(runs[0], list):
         paragraphs = runs
     else:
@@ -169,12 +152,11 @@ def rich_text(slide, x, y, w, h, runs, *, align=PP_ALIGN.LEFT, anchor=MSO_ANCHOR
     return tb
 
 def logo(slide, x, y, size=Inches(0.9)):
-    """Teardrop-ish logo made from a circle + smaller circle highlight + dot."""
-    # Large drop (serene-500)
+
     big = oval(slide, x, y + size * 0.1, size * 0.9, size * 0.9, SERENE_500)
-    # Highlight oval overlapping (serene-400)
+
     oval(slide, x + size * 0.3, y + size * 0.5, size * 0.6, size * 0.4, SERENE_400)
-    # Small dot at top (serene-300)
+
     dot_size = size * 0.18
     oval(slide, x + size * 0.4, y, dot_size, dot_size, SERENE_300)
     return big
@@ -184,7 +166,6 @@ def page_number(slide, n, total):
          f"{n} / {total}", size=9, color=SLATE_400, align=PP_ALIGN.RIGHT)
 
 def brand_footer(slide):
-    """Tiny brand mark bottom-left on non-cover slides."""
     logo(slide, Inches(0.55), Inches(7.05), size=Inches(0.28))
     text(slide, Inches(0.92), Inches(7.05), Inches(2.5), Inches(0.3),
          "haven", size=11, bold=True, color=SLATE_700)
@@ -203,29 +184,24 @@ def subtitle(slide, x, y, w, content, color=SLATE_500, size=16):
     return text(slide, x, y, w, Inches(1.5), content,
                 size=size, color=color, line_spacing=1.45)
 
-# ------------------------------------------------------------------
-# Slide builders
-# ------------------------------------------------------------------
-
 SLIDES = []
 
 def slide(fn):
     SLIDES.append(fn)
     return fn
 
-
 @slide
 def cover(s, n, total):
-    # Soft background
+
     bg(s, SERENE_50)
-    # Decorative blob on right
+
     oval(s, Inches(9.5), Inches(-2), Inches(7), Inches(7), SERENE_100)
     oval(s, Inches(11), Inches(2), Inches(5), Inches(5), SERENE_200)
-    # Logo + wordmark
+
     logo(s, Inches(0.9), Inches(0.95), size=Inches(0.8))
     text(s, Inches(1.85), Inches(1.0), Inches(4), Inches(0.6),
          "haven", size=28, bold=True, color=SLATE_800)
-    # Hero copy
+
     rich_text(s, Inches(0.9), Inches(2.4), Inches(9), Inches(3.5),
               [
                 [("A gentle space\nfor your ",
@@ -236,23 +212,22 @@ def cover(s, n, total):
     text(s, Inches(0.9), Inches(5.6), Inches(8), Inches(0.6),
          "An AI-powered mental wellness companion.",
          size=18, color=SLATE_500)
-    # Bottom pill
+
     rrect(s, Inches(0.9), Inches(6.4), Inches(3.1), Inches(0.45),
           SERENE_100, radius=0.5)
     oval(s, Inches(1.05), Inches(6.52), Inches(0.22), Inches(0.22), SERENE_500)
     text(s, Inches(1.4), Inches(6.48), Inches(3), Inches(0.32),
          "Project presentation  \u00b7  2026",
          size=11, bold=True, color=SERENE_800)
-    # No brand footer on cover
-    page_number(s, n, total)
 
+    page_number(s, n, total)
 
 @slide
 def problem(s, n, total):
     bg(s, WHITE)
     eyebrow(s, Inches(0.9), Inches(0.85), "The problem")
     title(s, Inches(0.9), Inches(1.15), Inches(11), "Mental health help is\nhard to reach when you need it most.")
-    # Stat cards
+
     cards = [
         ("1 in 5", "adults experience mental illness in any given year.", SERENE_600),
         ("$150+", "average cost per therapy session \u2014 often out of pocket.", PINK_600),
@@ -274,7 +249,6 @@ def problem(s, n, total):
     brand_footer(s)
     page_number(s, n, total)
 
-
 @slide
 def solution(s, n, total):
     bg(s, SERENE_50)
@@ -285,7 +259,7 @@ def solution(s, n, total):
     text(s, Inches(0.9), Inches(2.4), Inches(8.2), Inches(2),
          "A private, browser-based companion that listens, reflects,\nand gently guides \u2014 whenever you need it.",
          size=20, color=SLATE_700, line_spacing=1.5)
-    # Three pill tags
+
     pills = [("Eight mentors", SERENE_600),
              ("Mood-matched", PINK_600),
              ("100% private", GREEN_600)]
@@ -297,11 +271,10 @@ def solution(s, n, total):
              label, size=13, bold=True, color=color)
         x += w + Inches(0.15)
 
-    # Right: circle with logo
     oval(s, Inches(9.2), Inches(1.4), Inches(3.6), Inches(3.6), WHITE)
     oval(s, Inches(9.5), Inches(1.7), Inches(3.0), Inches(3.0), SERENE_100)
     logo(s, Inches(10.3), Inches(2.15), size=Inches(1.4))
-    # Floating mentor dots
+
     for cx, cy, col in [
         (Inches(8.8), Inches(4.5), SERENE_400),
         (Inches(12.6), Inches(3.8), PINK_400),
@@ -311,7 +284,6 @@ def solution(s, n, total):
         oval(s, cx, cy, Inches(0.5), Inches(0.5), col)
     brand_footer(s)
     page_number(s, n, total)
-
 
 @slide
 def principles(s, n, total):
@@ -344,7 +316,6 @@ def principles(s, n, total):
     brand_footer(s)
     page_number(s, n, total)
 
-
 @slide
 def mentors(s, n, total):
     bg(s, SERENE_50)
@@ -376,19 +347,18 @@ def mentors(s, n, total):
         cx = start_x + (card_w + gap_x) * c
         cy = start_y + (card_h + gap_y) * r
         rrect(s, cx, cy, card_w, card_h, WHITE, line_color=SLATE_100, radius=0.1)
-        # Avatar circle
+
         oval(s, cx + Inches(0.3), cy + Inches(0.3), Inches(1.2), Inches(1.2), color)
-        # Initial letter
+
         text(s, cx + Inches(0.3), cy + Inches(0.53), Inches(1.2), Inches(0.8),
              name[0], size=28, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
-        # Name + role
+
         text(s, cx + Inches(1.65), cy + Inches(0.4), card_w - Inches(1.8), Inches(0.45),
              name, size=16, bold=True, color=SLATE_800)
         text(s, cx + Inches(1.65), cy + Inches(0.92), card_w - Inches(1.8), Inches(0.7),
              role, size=11, color=SERENE_600, line_spacing=1.25)
     brand_footer(s)
     page_number(s, n, total)
-
 
 @slide
 def mood_matching(s, n, total):
@@ -415,21 +385,21 @@ def mood_matching(s, n, total):
         rx = x + (w + Inches(0.35)) * col
         ry = y + (h + gap) * row
         rrect(s, rx, ry, w, h, SLATE_50, line_color=SLATE_100, radius=0.3)
-        # Mood tag
+
         rrect(s, rx + Inches(0.2), ry + Inches(0.1), Inches(1.0), Inches(0.35),
               color, radius=0.5)
         text(s, rx + Inches(0.2), ry + Inches(0.13), Inches(1.0), Inches(0.3),
              mood, size=11, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
-        # Arrow
+
         text(s, rx + Inches(1.3), ry + Inches(0.12), Inches(0.4), Inches(0.3),
              "\u2192", size=16, color=SLATE_400)
-        # Mentor name
+
         text(s, rx + Inches(1.7), ry + Inches(0.13), Inches(1.5), Inches(0.3),
              mentor, size=13, bold=True, color=SLATE_800)
-        # Role
+
         text(s, rx + Inches(2.7), ry + Inches(0.15), Inches(3), Inches(0.3),
              role, size=11, color=SLATE_500)
-    # Helper tip
+
     rrect(s, Inches(0.9), Inches(5.6), Inches(11.5), Inches(0.8),
           SERENE_50, line_color=SERENE_100, radius=0.15)
     text(s, Inches(1.2), Inches(5.85), Inches(11), Inches(0.4),
@@ -437,7 +407,6 @@ def mood_matching(s, n, total):
          size=13, color=SERENE_800, italic=True)
     brand_footer(s)
     page_number(s, n, total)
-
 
 FEATURES = [
     ("Mood-aware matching",
@@ -460,7 +429,6 @@ FEATURES = [
      SLATE_200, SLATE_500),
 ]
 
-
 @slide
 def features(s, n, total):
     bg(s, SERENE_50)
@@ -482,10 +450,10 @@ def features(s, n, total):
         cx = start_x + (card_w + gap_x) * c
         cy = start_y + (card_h + gap_y) * r
         rrect(s, cx, cy, card_w, card_h, WHITE, line_color=SLATE_100, radius=0.08)
-        # icon chip
+
         rrect(s, cx + Inches(0.3), cy + Inches(0.3), Inches(0.55), Inches(0.55),
               c2, radius=0.25)
-        # small inner dot to suggest icon
+
         oval(s, cx + Inches(0.42), cy + Inches(0.42), Inches(0.32), Inches(0.32), c1)
         text(s, cx + Inches(1), cy + Inches(0.35), card_w - Inches(1.2), Inches(0.5),
              heading, size=16, bold=True, color=SLATE_800)
@@ -493,7 +461,6 @@ def features(s, n, total):
              body, size=12, color=SLATE_500, line_spacing=1.55)
     brand_footer(s)
     page_number(s, n, total)
-
 
 @slide
 def how_it_works(s, n, total):
@@ -517,7 +484,7 @@ def how_it_works(s, n, total):
     for i, (num, heading, body) in enumerate(steps):
         cx = x + (w + gap) * i
         rrect(s, cx, y, w, h, WHITE, line_color=SLATE_100, radius=0.08)
-        # Big numbered circle
+
         oval(s, cx + Inches(0.4), y + Inches(0.45), Inches(0.75), Inches(0.75), SERENE_100)
         text(s, cx + Inches(0.4), y + Inches(0.56), Inches(0.75), Inches(0.55),
              num, size=22, bold=True, color=SERENE_700, align=PP_ALIGN.CENTER)
@@ -525,18 +492,17 @@ def how_it_works(s, n, total):
              heading, size=18, bold=True, color=SLATE_800, line_spacing=1.2)
         text(s, cx + Inches(0.4), y + Inches(2.35), w - Inches(0.8), Inches(1.0),
              body, size=13, color=SLATE_500, line_spacing=1.55)
-        # Arrow between steps
+
         if i < 2:
             text(s, cx + w + Inches(0.02), y + Inches(1.3), gap, Inches(0.6),
                  "\u2192", size=28, color=SERENE_300, align=PP_ALIGN.CENTER)
     brand_footer(s)
     page_number(s, n, total)
 
-
 @slide
 def breathing(s, n, total):
     bg(s, SERENE_50)
-    # soft circle decoration
+
     oval(s, Inches(9), Inches(1.5), Inches(5.5), Inches(5.5), SERENE_100)
     oval(s, Inches(9.7), Inches(2.2), Inches(4), Inches(4), SERENE_200)
     oval(s, Inches(10.4), Inches(2.9), Inches(2.6), Inches(2.6), SERENE_500)
@@ -548,7 +514,7 @@ def breathing(s, n, total):
           "Four techniques.\nTwo minutes.\nOne steadier you.", size=34)
     subtitle(s, Inches(0.9), Inches(3.35), Inches(8),
              "Interactive guided breathing with real-time visual pacing.")
-    # Technique tiles
+
     techs = [
         ("Box",        "4\u00b74\u00b74\u00b74", "Focus + stress reset",   SERENE_600),
         ("4\u00b77\u00b78", "Relaxing",            "Unwind before sleep",    PURPLE_600),
@@ -563,7 +529,7 @@ def breathing(s, n, total):
     for i, (name, pattern, when, color) in enumerate(techs):
         cx = x + (w + gap) * i
         rrect(s, cx, y, w, h, WHITE, line_color=SLATE_100, radius=0.1)
-        # color strip
+
         rrect(s, cx + Inches(0.2), y + Inches(0.25), Inches(0.55), Inches(0.3),
               color, radius=0.4)
         text(s, cx + Inches(0.2), y + Inches(0.26), Inches(0.55), Inches(0.3),
@@ -575,7 +541,6 @@ def breathing(s, n, total):
     brand_footer(s)
     page_number(s, n, total)
 
-
 @slide
 def resources(s, n, total):
     bg(s, WHITE)
@@ -585,7 +550,6 @@ def resources(s, n, total):
     subtitle(s, Inches(0.9), Inches(2.2), Inches(11),
              "Curated crisis support, grounding techniques, and trusted reading \u2014 always one tap away.")
 
-    # Crisis banner
     rrect(s, Inches(0.9), Inches(3.1), Inches(11.5), Inches(1.8),
           AMBER_50, line_color=AMBER_200, radius=0.08)
     rrect(s, Inches(1.15), Inches(3.4), Inches(0.6), Inches(0.6), AMBER_600, radius=0.2)
@@ -597,7 +561,6 @@ def resources(s, n, total):
          "988 Suicide & Crisis Lifeline   \u00b7   Text HOME to 741741   \u00b7   SAMHSA 1-800-662-HELP   \u00b7   Trevor Project 1-866-488-7386",
          size=13, color=SLATE_700, line_spacing=1.55)
 
-    # Category summary
     cats = [
         ("Grounding", "5\u00b74\u00b73\u00b72\u00b71 \u00b7 Body scan \u00b7 Anchor object"),
         ("Daily practice", "Three good things \u00b7 Morning light \u00b7 Walk without phone"),
@@ -618,12 +581,11 @@ def resources(s, n, total):
     brand_footer(s)
     page_number(s, n, total)
 
-
 @slide
 def privacy(s, n, total):
-    # Dark serene background
+
     bg(s, SERENE_800)
-    # soft glow
+
     oval(s, Inches(9), Inches(-2), Inches(7), Inches(7), SERENE_700)
     oval(s, Inches(11), Inches(1), Inches(5), Inches(5), SERENE_600)
     eyebrow(s, Inches(0.9), Inches(0.85), "Privacy", color=SERENE_200)
@@ -647,7 +609,7 @@ def privacy(s, n, total):
     for i, (head, body) in enumerate(items):
         cx = x + (w + gap) * i
         rrect(s, cx, y, w, h, SERENE_700, radius=0.1)
-        # check icon
+
         oval(s, cx + Inches(0.3), cy_ := y + Inches(0.3), Inches(0.45), Inches(0.45), SERENE_300)
         text(s, cx + Inches(0.3), cy_ + Inches(0.05), Inches(0.45), Inches(0.35),
              "\u2713", size=16, bold=True, color=SERENE_800, align=PP_ALIGN.CENTER)
@@ -656,7 +618,6 @@ def privacy(s, n, total):
         text(s, cx + Inches(0.3), y + Inches(1.35), w - Inches(0.6), Inches(0.5),
              body, size=11, color=SERENE_100, line_spacing=1.45)
     page_number(s, n, total)
-
 
 @slide
 def architecture(s, n, total):
@@ -667,7 +628,6 @@ def architecture(s, n, total):
     subtitle(s, Inches(0.9), Inches(2.2), Inches(11),
              "No black box. The whole data flow is three hops \u2014 and one of them is just rendering.")
 
-    # Flow: Browser -> Gemini -> Browser
     boxes = [
         ("Your browser",   "The whole app (HTML, CSS, JS)\nloads here. No backend.",     SERENE_500),
         ("Gemini API",     "Direct call to Google\u2019s\nGemini 2.0 Flash endpoint.",   PURPLE_600),
@@ -693,7 +653,6 @@ def architecture(s, n, total):
             text(s, arrow_x, y + Inches(1.05), gap, Inches(0.5),
                  "\u2192", size=32, color=SERENE_300, align=PP_ALIGN.CENTER)
 
-    # Tech stack pill bar
     stack = "Vanilla HTML  \u00b7  Vanilla CSS  \u00b7  Vanilla JS  \u00b7  Google Gemini API"
     rrect(s, Inches(0.9), Inches(6.3), Inches(11.5), Inches(0.55),
           SLATE_50, line_color=SLATE_100, radius=0.3)
@@ -702,11 +661,10 @@ def architecture(s, n, total):
     brand_footer(s)
     page_number(s, n, total)
 
-
 @slide
 def crisis_page(s, n, total):
     bg(s, WHITE)
-    # amber-toned banner
+
     rrect(s, Inches(0.9), Inches(0.85), Inches(11.5), Inches(5.8),
           AMBER_50, line_color=AMBER_200, radius=0.04)
 
@@ -717,7 +675,6 @@ def crisis_page(s, n, total):
     title(s, Inches(2.2), Inches(1.55), Inches(9.5),
           "You don\u2019t have to carry this alone.", color=AMBER_800, size=36)
 
-    # Contact tiles
     contacts = [
         ("CALL OR TEXT",  "988",              "Suicide & Crisis Lifeline \u00b7 24/7 \u00b7 US"),
         ("TEXT HOME TO",  "741741",           "Crisis Text Line \u00b7 24/7 \u00b7 Free"),
@@ -742,12 +699,11 @@ def crisis_page(s, n, total):
              number, size=26, bold=True, color=SLATE_800, line_spacing=1.1)
         text(s, cx + Inches(0.35), cy + Inches(1.15), w - Inches(0.7), Inches(0.4),
              desc, size=11, color=SLATE_500)
-    # Footer note
+
     text(s, Inches(0.9), Inches(6.85), Inches(11.5), Inches(0.3),
          "Outside the US? findahelpline.com lists verified crisis services in 130+ countries.",
          size=11, color=SLATE_500, align=PP_ALIGN.CENTER)
     page_number(s, n, total)
-
 
 @slide
 def limits(s, n, total):
@@ -758,10 +714,9 @@ def limits(s, n, total):
     subtitle(s, Inches(0.9), Inches(2.2), Inches(11),
              "A tool that refuses to name its limits isn\u2019t safe. So here they are, plainly.")
 
-    # Two columns: NOT / IS
     col_y = Inches(3.25)
     col_h = Inches(3.5)
-    # NOT column
+
     rrect(s, Inches(0.9), col_y, Inches(5.8), col_h, RGBColor(0xfe, 0xf2, 0xf2),
           line_color=RGBColor(0xfe, 0xcd, 0xd3), radius=0.06)
     text(s, Inches(1.2), col_y + Inches(0.3), Inches(5.5), Inches(0.5),
@@ -777,7 +732,6 @@ def limits(s, n, total):
         text(s, Inches(1.2), col_y + Inches(1.0) + Inches(0.45) * i, Inches(5.3), Inches(0.45),
              "\u2717   " + item, size=13, color=SLATE_700, line_spacing=1.4)
 
-    # IS column
     rrect(s, Inches(7.1), col_y, Inches(5.3), col_h, SERENE_50,
           line_color=SERENE_200, radius=0.06)
     text(s, Inches(7.4), col_y + Inches(0.3), Inches(4.8), Inches(0.5),
@@ -795,7 +749,6 @@ def limits(s, n, total):
     brand_footer(s)
     page_number(s, n, total)
 
-
 @slide
 def thank_you(s, n, total):
     bg(s, SERENE_50)
@@ -809,7 +762,7 @@ def thank_you(s, n, total):
     text(s, Inches(0), Inches(3.6), Inches(13.333), Inches(0.8),
          "Open haven \u2014 a gentle space for your mind.",
          size=20, color=SLATE_500, align=PP_ALIGN.CENTER)
-    # CTA pill
+
     cta_w = Inches(2.7)
     cta_x = (prs.slide_width - cta_w) / 2
     rrect(s, cta_x, Inches(4.7), cta_w, Inches(0.7), SERENE_600, radius=0.5)
@@ -823,10 +776,6 @@ def thank_you(s, n, total):
          "Questions welcome.", size=13, color=SLATE_500, align=PP_ALIGN.CENTER)
     page_number(s, n, total)
 
-
-# ------------------------------------------------------------------
-# Build
-# ------------------------------------------------------------------
 total = len(SLIDES)
 for i, builder in enumerate(SLIDES, start=1):
     s = prs.slides.add_slide(BLANK)
